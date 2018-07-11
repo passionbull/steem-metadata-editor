@@ -1,4 +1,6 @@
-<template><h1>Connecting...</h1></template>
+<template>
+  <h1 class="text-center py-5">Connecting...</h1>
+</template>
 
 <script>
 export default {
