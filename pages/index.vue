@@ -65,6 +65,7 @@
 </template>
 
 <script>
+// TODO: add notification
 import marked from 'marked'
 
 export default {
