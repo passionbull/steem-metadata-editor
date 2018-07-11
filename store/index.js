@@ -12,7 +12,10 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       user: null,
-      posts: []
+      posts: [],
+      comments: [],
+      activePost: null,
+      activeJsonMetadataString: null
     },
     mutations: {
       login (state, user) {
@@ -26,6 +29,10 @@ const createStore = () => {
       },
       setComments (state, comments) {
         state.comments = comments
+      },
+      setActivePost (state, post) {
+        state.activePost = post
+        state.activeJsonMetadataString = JSON.stringify(JSON.parse(post.json_metadata), null, 4)
       }
     },
     actions: {
@@ -46,20 +53,28 @@ const createStore = () => {
         commit('logout')
       },
       fetchPosts ({ commit, state }) {
-        steem.api.getDiscussionsByBlog({tag: state.user.account.name, limit: 100}, (err, posts) => {
-          if (err) console.log(err);
-          else {
-            commit('setPosts', posts.filter(post => post.author === state.user.account.name))
-          }
+        return new Promise((resolve, reject) => {
+          steem.api.getDiscussionsByBlog({tag: state.user.account.name, limit: 100}, (err, posts) => {
+            if (err) reject(err);
+            else {
+              posts = posts.filter(post => post.author === state.user.account.name)
+              commit('setPosts', posts)
+              commit('setActivePost', posts[0])
+              resolve()
+            }
+          })
         })
       },
       fetchComments ({ commit, state }) {
-        steem.api.getDiscussionsByComments({start_author: state.user.account.name, limit: 100}, (err, comments) => {
-          if (err) console.log(err);
-          else {
-            commit('setComments', comments)
-          }
-        });
+        return new Promise((resolve, reject) => {
+          steem.api.getDiscussionsByComments({start_author: state.user.account.name, limit: 100}, (err, comments) => {
+            if (err) reject(err);
+            else {
+              commit('setComments', comments)
+              resolve()
+            }
+          })
+        })
       }
     }
   })
