@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueSteemConnect from 'vue-steemconnect'
+import steem from 'steem'
 
 Vue.use(VueSteemConnect, {
   app: 'mkt.test',
@@ -10,7 +11,8 @@ Vue.use(VueSteemConnect, {
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      user: null
+      user: null,
+      posts: []
     },
     mutations: {
       login (state, user) {
@@ -18,6 +20,9 @@ const createStore = () => {
       },
       logout (state) {
         state.user = null
+      },
+      setPosts (state, posts) {
+        state.posts = posts
       }
     },
     actions: {
@@ -36,6 +41,14 @@ const createStore = () => {
       logout ({ commit }) {
         localStorage.removeItem('access_token')
         commit('logout')
+      },
+      fetchPosts ({ commit, state }) {
+        steem.api.getDiscussionsByBlog({tag: state.user.account.name, limit: 100}, (err, posts) => {
+          if (err) console.log(err);
+          else {
+            commit('setPosts', posts.filter(post => post.author === state.user.account.name))
+          }
+        })
       }
     }
   })
