@@ -1,7 +1,7 @@
 {
-  "name": "the-wizards-lair",
+  "name": "steem-metadata-editor",
   "version": "1.0.0",
-  "description": "Admin interface for the-magic-frog.com",
+  "description": "Edit your post's and comment's json_metadata with ease.",
   "author": "mkt",
   "private": true,
   "scripts": {

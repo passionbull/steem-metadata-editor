@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-if="$store.state.user">
-    <h1>The Wizard's Lair</h1>
+    <h1>Steem Metadata Editor</h1>
     <a href="#" @click="logout()">Logout</a>
     <div v-for="post in $store.state.posts" :key="post.id" :post="post">{{ post.title }}</div>
   </div>
