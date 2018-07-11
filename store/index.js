@@ -23,6 +23,9 @@ const createStore = () => {
       },
       setPosts (state, posts) {
         state.posts = posts
+      },
+      setComments (state, comments) {
+        state.comments = comments
       }
     },
     actions: {
@@ -49,6 +52,14 @@ const createStore = () => {
             commit('setPosts', posts.filter(post => post.author === state.user.account.name))
           }
         })
+      },
+      fetchComments ({ commit, state }) {
+        steem.api.getDiscussionsByComments({start_author: state.user.account.name, limit: 100}, (err, comments) => {
+          if (err) console.log(err);
+          else {
+            commit('setComments', comments)
+          }
+        });
       }
     }
   })
