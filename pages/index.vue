@@ -51,7 +51,10 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary" @click="saveMetadata" v-if="isValidJson">Save changes</button>
+              <button type="button" class="btn btn-primary" @click="saveMetadata" v-if="isValidJson">
+                <span v-if="saving"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+                <span v-else>Save changes</span>
+              </button>
               <span v-else class="text-danger">Invalid JSON</span>
             </div>
           </div>
@@ -69,6 +72,11 @@
 import marked from 'marked'
 
 export default {
+  data () {
+    return {
+      saving: false
+    }
+  },
   async mounted () {
     if (!this.$store.state.user) {
       const accessToken = localStorage.getItem('access_token')
@@ -100,6 +108,7 @@ export default {
       return marked(body)
     },
     saveMetadata () {
+      this.saving = true
       this.$steemconnect.comment(
         this.$store.state.activePost.parent_author,
         this.$store.state.activePost.parent_permlink,
@@ -108,7 +117,8 @@ export default {
         this.$store.state.activePost.title,
         this.$store.state.activePost.body,
         JSON.parse(this.$store.state.activeJsonMetadataString),
-        (err, res) => {
+        (err) => {
+          this.saving = false
           if (err) console.log(err)
           else {
             this.$store.dispatch('fetchPosts')
