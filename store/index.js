@@ -5,7 +5,7 @@ import steem from 'steem'
 
 Vue.use(VueSteemConnect, {
   app: 'mkt.test',
-  callbackURL: 'http://localhost:3000/auth'
+  callbackURL: 'https://steem-metadata-editor.herokuapp.com/auth'
 })
 
 const createStore = () => {
