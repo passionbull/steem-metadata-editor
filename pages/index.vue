@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h1 class="text-center pt-5">Steem Metadata Editor</h1>
+    <h1 class="text-center pt-5">
+      { }<br>
+      Steem Metadata Editor
+    </h1>
     <div class="container pb-5" v-if="$store.state.user">
       <h5 class="lead text-center pb-1">
         logged in as <a :href="'https://steemit.com/@' + $store.state.user.account.name" target="_blank">@{{ $store.state.user.account.name }}</a>
@@ -133,6 +136,11 @@ export default {
 </script>
 
 <style lang="sass">
+  body
+    background: #f8f8f8
+    font-family: 'Roboto', sans-serif
+  h1
+    font-family: 'Roboto', sans-serif
   .nav-tabs
     border-bottom: none
   .list-group-item
