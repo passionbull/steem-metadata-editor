@@ -109,7 +109,11 @@ export default {
         this.$store.state.activePost.body,
         JSON.parse(this.$store.state.activeJsonMetadataString),
         (err, res) => {
-          console.log(err, res)
+          if (err) console.log(err)
+          else {
+            this.$store.dispatch('fetchPosts')
+            this.$store.dispatch('fetchComments')
+          }
         }
       )
     }
