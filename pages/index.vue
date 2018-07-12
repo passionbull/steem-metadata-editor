@@ -88,6 +88,7 @@ export default {
     if (this.$store.state.user) {
       await this.$store.dispatch('fetchPosts')
       await this.$store.dispatch('fetchComments')
+      this.$store.commit('setActivePost', this.$store.state.posts[0])
     }
   },
   computed: {

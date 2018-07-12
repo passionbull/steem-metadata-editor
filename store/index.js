@@ -59,7 +59,6 @@ const createStore = () => {
             else {
               posts = posts.filter(post => post.author === state.user.account.name)
               commit('setPosts', posts)
-              commit('setActivePost', posts[0])
               resolve()
             }
           })
