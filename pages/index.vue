@@ -69,12 +69,13 @@
             </div>
             <div class="modal-footer">
               <!-- always show cancel button, show save button when metadata valid, otherwise show Invalid JSON error-->
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <i :class="'fas fa-check text-success confirm-save' + (showConfirmSave ? ' show' : '')"></i>
               <button type="button" class="btn btn-primary" @click="saveMetadata" v-if="isValidJson">
                 <span v-if="saving"><i class="fas fa-spinner fa-spin"></i> Saving...</span>
                 <span v-else>Save changes</span>
               </button>
               <span v-else class="text-danger">Invalid JSON</span>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
           </div>
         </div>
@@ -95,7 +96,8 @@ import marked from 'marked'
 export default {
   data () {
     return {
-      saving: false // loading indicator for Save Changes button
+      saving: false, // loading indicator for Save Changes button
+      showConfirmSave: false // show green check mark after saving
     }
   },
   async mounted () {
@@ -154,6 +156,10 @@ export default {
             // and update data (posts/comments) again, once metadata is update
             this.$store.dispatch('fetchPosts')
             this.$store.dispatch('fetchComments')
+
+            // show green check mark for 3 seconds
+            this.showConfirmSave = true
+            setTimeout(() => {this.showConfirmSave = false}, 3000)
           }
         }
       )
@@ -176,4 +182,9 @@ export default {
     p
       &:last-child
         margin-bottom: 0
+  .confirm-save
+    opacity: 0
+    transition: opacity .3s ease
+    &.show
+      opacity: 1
 </style>
