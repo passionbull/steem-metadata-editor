@@ -58,20 +58,19 @@ const createStore = () => {
         localStorage.removeItem('access_token')
         commit('logout')
       },
-      fetchPosts ({ commit, state }) {
-        // return promise to be able to wait for posts to be fetched
-        return new Promise((resolve, reject) => {
-          steem.api.getDiscussionsByBlog({tag: state.user.account.name, limit: 100}, (err, posts) => {
-            if (err) reject(err);
-            else {
-              // filter to remove resteems, we need only posts from the logged in user
-              posts = posts.filter(post => post.author === state.user.account.name)
-              // save posts in store
-              commit('setPosts', posts)
-              resolve()
-            }
-          })
-        })
+      async fetchPosts ({ commit, state }) {
+
+        var sumPosts = []
+        var posts = await getPosts(state)
+        sumPosts = sumPosts.concat(posts);
+        while(true){
+          posts = await getPosts(state, posts[posts.length-1].author,posts[posts.length-1].permlink)
+          sumPosts = sumPosts.concat(posts);
+          if(posts.length == 1)
+            break;
+        }
+        console.log(sumPosts);
+        commit('setPosts', sumPosts)
       },
       fetchComments ({ commit, state }) {
         // return promise to be able to wait for comments to be fetched
