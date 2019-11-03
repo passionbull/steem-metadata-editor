@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "marked": "^0.7.0",
-    "nuxt": "^1.0.0",
+    "nuxt": "^2.10.2",
     "steem": "^0.7.1",
     "vue-steemconnect": "^0.4.1"
   },
