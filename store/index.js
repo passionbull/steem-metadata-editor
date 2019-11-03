@@ -9,6 +9,20 @@ Vue.use(VueSteemConnect, {
   callbackURL: 'https://steem-metadata-editor.herokuapp.com/auth'
 })
 
+async function getPosts(state,_start_author,_start_permlink){
+  return new Promise((resolve, reject) => {
+    steem.api.getDiscussionsByBlog({tag: state.user.account.name, limit: 100, start_author:_start_author, start_permlink:_start_permlink}, (err, posts) => {
+      if (err) reject(err);
+      else {
+        // filter to remove resteems, we need only posts from the logged in user
+        posts = posts.filter(post => post.author === state.user.account.name)
+        console.log(posts);
+        resolve(posts)
+      }
+    })
+  })
+}
+
 const createStore = () => {
   return new Vuex.Store({
     state: {
