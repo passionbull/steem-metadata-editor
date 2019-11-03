@@ -6,7 +6,7 @@ import steem from 'steem'
 // make steemconnect available
 Vue.use(VueSteemConnect, {
   app: 'wp-steem-share',
-  callbackURL: 'https://https://jacobyu.net/steem-metadata-editor/auth'
+  callbackURL: 'https://jacobyu.net/steem-metadata-editor/auth'
 })
 
 async function getPosts(state,_start_author,_start_permlink){
