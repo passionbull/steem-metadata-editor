@@ -17,3 +17,11 @@ npm start
 ```
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+
+
+# deploy github page
+https://gist.github.com/cobyism/4730490
+
+npm run generate
+git add dist -f && git commit -m "write your comment"
+git subtree push --prefix dist origin gh-pages
