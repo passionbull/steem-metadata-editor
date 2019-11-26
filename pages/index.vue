@@ -31,7 +31,9 @@
           <ul class="list-group">
             <!-- single item -->
             <li class="list-group-item" v-for="post in $store.state.posts" :key="post.id" :post="post">
-              <div class="float-left">{{ post.title }}</div>
+              <a :href="'https://steempeak.com/@' + $store.state.user.account.name+'/'+ post.permlink "> {{ post.title }}  </a>
+              <div>{{JSON.parse(post.json_metadata).tags}}</div>
+              <div>"category":{{JSON.parse(post.json_metadata).category}},</div>
               <!-- button to switch active post and json_metadata -->
               <button class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#editorModal" @click="$store.commit('setActivePost', post)"><i class="fas fa-pen"></i></button>
             </li>
